@@ -94,6 +94,7 @@ class MyForm extends React.Component {
                         <tbody>
                         {Object.entries(this.state).sort()
                             .map((item, index) => {
+                                    if (item[0].includes('completed')) return;
                                     return (
                                         <tr key={index}>
                                             <td>{item[0]}</td>
