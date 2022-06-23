@@ -1,4 +1,5 @@
 import React from "react";
+import cn from 'classnames';
 
 class MyForm extends React.Component {
     constructor(props) {
@@ -23,8 +24,35 @@ class MyForm extends React.Component {
         this.setState({[e.target.name]: value});
     }
 
+    renderTable() {
+        {
+            return (
+                Object.entries(this.state).sort()
+                    .map((item, index) => {
+                            if (item[0].includes('completed')) return;
+                            return (
+                                <tr key={index}>
+                                    <td>{item[0]}</td>
+                                    <td>{String(item[1])}</td>
+                                </tr>
+                            )
+                        }
+                    )
+            )
+        }
+    }
+
+
     render() {
-        const {completed} = this.state;
+        const {completed, email, password} = this.state;
+
+        const btnSubmit = cn(
+            'btn',
+            'btn-primary',
+            {
+                'disabled': !email || !password
+            }
+        )
 
         if (!completed) {
             return (
@@ -62,9 +90,9 @@ class MyForm extends React.Component {
                         <select id="country" name="country" value={this.state.country}
                                 className="form-control" onChange={this.onChangeInput}>
                             <option>Choose</option>
-                            <option value="great britain">Great Britain</option>
-                            <option value="ukraine">Ukraine</option>
-                            <option value="usa">USA</option>
+                            <option value="Great Britain">Great Britain</option>
+                            <option value="Ukraine">Ukraine</option>
+                            <option value="USA">USA</option>
                         </select>
                     </div>
 
@@ -79,7 +107,7 @@ class MyForm extends React.Component {
                         </div>
                     </div>
 
-                    <button type="submit" className="btn btn-primary">Sign in</button>
+                    <button type="submit" className={btnSubmit}>Sign in</button>
                 </form>
             )
         } else {
@@ -92,18 +120,7 @@ class MyForm extends React.Component {
 
                     <table className="table">
                         <tbody>
-                        {Object.entries(this.state).sort()
-                            .map((item, index) => {
-                                    if (item[0].includes('completed')) return;
-                                    return (
-                                        <tr key={index}>
-                                            <td>{item[0]}</td>
-                                            <td>{String(item[1])}</td>
-                                        </tr>
-                                    )
-                                }
-                            )
-                        }
+                        {this.renderTable()}
                         </tbody>
                     </table>
                 </div>
